@@ -1,21 +1,11 @@
-import express from 'express'
-import morgan from 'morgan'
+import dotenv from 'dotenv'
+
 import cors from 'cors'
-// Iniciazaciones
-const app = express();
+import Server from './models/server';
 
-// Settings
-app.set('port', process.env.PORT || 3000);
+//Configuracion de las variables de entorno
+dotenv.config();
 
-// Middlewares
-app.use(morgan('dev'));
-app.use(cors());
-app.use(express.urlencoded({extended: false}));
-app.use(express.json());
-
-// Routes
-app.get('/', (req, res) => {
-    res.send(`La API se encuentra en http://localhost:${app.get('port')}`);
-});
-
-export default app;
+// Inicializacion del servidor
+const server = new Server;
+server.listen();

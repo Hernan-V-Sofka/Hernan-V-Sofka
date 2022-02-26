@@ -2,12 +2,14 @@ CREATE DATABASE MarvelGames;
 
 USE MarvelGames;
 
+--Eliminar la tabla y ejecutar nuevamente el query
 CREATE TABLE UsersGame(
     IdUser INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     NameUser VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
     Email VARCHAR(50) NOT NULL,
     PassUser VARCHAR(50) NOT NULL
+    TypeUser VARCHAR(4) NOT NULL
 );
 
 CREATE TABLE CardImg(
