@@ -15,20 +15,25 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
+const entorno_1 = __importDefault(require("../entorno"));
 const connection_1 = __importDefault(require("../DB/connection"));
+const login_routes_1 = __importDefault(require("../routes/login.routes"));
 class Server {
     constructor() {
+        this.apiPaths = {
+            login: '/game/login'
+        };
         this.app = (0, express_1.default)();
-        this.port = process.env.PORT || '8000';
-        this.dbConnection();
+        this.port = entorno_1.default.port || '8000';
         // Llamada al metodo de los meddelwares
+        this.dbConnection();
         this.middleware();
         this.routes();
     }
     dbConnection() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const connection = new connection_1.default;
+                const connection = new connection_1.default();
                 yield connection.connect();
             }
             catch (error) {
@@ -43,6 +48,7 @@ class Server {
         this.app.use(express_1.default.json());
     }
     routes() {
+        this.app.use(this.apiPaths.login, login_routes_1.default);
     }
     listen() {
         this.app.listen(this.port, () => {

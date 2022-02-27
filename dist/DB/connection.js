@@ -8,8 +8,8 @@ class DB {
     constructor() {
         this.connection = mysql_1.default.createConnection({
             host: 'localhost',
-            user: 'marvelg',
-            password: '123456',
+            user: 'root',
+            password: '01251903',
             database: 'MarvelGame'
         });
     }

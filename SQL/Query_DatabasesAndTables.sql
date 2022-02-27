@@ -8,7 +8,7 @@ CREATE TABLE UsersGame(
     NameUser VARCHAR(50) NOT NULL,
     LastName VARCHAR(50) NOT NULL,
     Email VARCHAR(50) NOT NULL,
-    PassUser VARCHAR(50) NOT NULL
+    PassUser VARCHAR(120) NOT NULL,
     TypeUser VARCHAR(4) NOT NULL
 );
 

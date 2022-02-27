@@ -2,27 +2,31 @@ import express, {Application} from 'express';
 import morgan from 'morgan'
 import cors from 'cors'
 
+import entorno from '../entorno';
 import DB from '../DB/connection'
+import login from '../routes/login.routes'
 
 class Server {
 
     private app: Application;
     private port: string;
-    
+    private apiPaths = {
+        login:'/game/login'
+    }
 
     constructor(){
         this.app = express();
-        this.port = process.env.PORT || '8000';
+        this.port = entorno.port|| '8000';
 
-        this.dbConnection();
         // Llamada al metodo de los meddelwares
+        this.dbConnection();
         this.middleware();
         this.routes();
     }
     
     async dbConnection(){
         try {
-            const connection = new DB;
+            const connection = new DB();
             await connection.connect();
         } catch (error) {
             throw new Error('Error de conexion');
@@ -37,11 +41,11 @@ class Server {
     }
 
     routes() {
-        
+        this.app.use(this.apiPaths.login, login);
     }
 
     listen() {
-        this.app.listen(this.port, () =>{
+        this.app.listen(this.port, () => {
             console.log(`Servidor corriendo en puerto ${ this.port }`);
         });
     }
