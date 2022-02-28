@@ -18,6 +18,13 @@ const cors_1 = __importDefault(require("cors"));
 const entorno_1 = __importDefault(require("../entorno"));
 const connection_1 = __importDefault(require("../DB/connection"));
 const login_routes_1 = __importDefault(require("../routes/login.routes"));
+/*
+    Clase encargada de inicializar el servidor
+    Contiene las instancias de:
+    > La conexion a la base de datos
+    > Los middlewares
+    > Las rutas de direccionamiento de la Api
+*/
 class Server {
     constructor() {
         this.apiPaths = {

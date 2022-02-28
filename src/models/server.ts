@@ -6,6 +6,14 @@ import entorno from '../entorno';
 import DB from '../DB/connection'
 import login from '../routes/login.routes'
 
+
+/* 
+    Clase encargada de inicializar el servidor 
+    Contiene las instancias de:
+    > La conexion a la base de datos 
+    > Los middlewares 
+    > Las rutas de direccionamiento de la Api
+*/
 class Server {
 
     private app: Application;

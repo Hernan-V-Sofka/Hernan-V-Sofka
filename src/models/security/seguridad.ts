@@ -1,5 +1,12 @@
 import bcrypt from "bcrypt";
 
+
+/* 
+    Clase encargada de 
+        > Validar que el email no tengan mayusculas
+        > Encriptar el password
+        > Comparar el password, el que esta en la base de datos y el que manda el usuario.
+*/
 class Seguridad {
     
     private email: string;
@@ -11,6 +18,7 @@ class Seguridad {
         this.password = password;
     }
 
+    // verifico que el correo que recibo este todo en minusculas.
     public set setEmail(email: string){
         this.email = email.toLowerCase();
     }
@@ -26,6 +34,8 @@ class Seguridad {
         return this.password = await hash;
     }
     
+    // Metodo encargao de comparar los password de los usuarios, el que ingresa 
+    // y el que se encuentra en la base de datos.
     async passwordCompare(password: string){
         return await bcrypt.compare(password,this.password)
     }

@@ -1,6 +1,6 @@
 import connection from './connection';
 import Seguridad from '../models/security/seguridad';
-
+import Consulta from './consultas';
 
 class RegisterUser extends connection{
     constructor(){
@@ -11,12 +11,21 @@ class RegisterUser extends connection{
         const seguridad = new Seguridad(email, password);
         email = seguridad.getEmail;
         password = await seguridad.encript();
+       /* Terminar de implementar el modulo de busqueda para la validar el registro de los usuarios y si ya estan registrados
+        redirigilos a otro modulo.
+        const consul = new Consulta();
+        const busqueda = consul.busqueda(email);
+        console.log(busqueda);
         
-        this.connection.query(`INSERT INTO UsersGame VALUES("${name}","${lastName}","${email}","${password}","user")`, (error) =>{
-            if(error){
-                console.log(error);
-            }
-            console.log('Guardado con exito');
+        itf(consul.busqueda(email) == true){
+        }
+        */
+
+        // Query encargado de generar la insercion en la base de datos del usuario.
+        this.connection.query('INSERT INTO UsersGame (NameUser, LastName, Email, PassUser, TypeUser) VALUES (?, ?, ?, ?, ?);',
+            [name,lastName,email,password, 'user'],(error) => {
+            if(error) throw error;
+            
         });
     }
 }

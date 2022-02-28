@@ -13,11 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
+/*
+    Clase encargada de
+        > Validar que el email no tengan mayusculas
+        > Encriptar el password
+        > Comparar el password, el que esta en la base de datos y el que manda el usuario.
+*/
 class Seguridad {
     constructor(email, password) {
         this.email = email;
         this.password = password;
     }
+    // verifico que el correo que recibo este todo en minusculas.
     set setEmail(email) {
         this.email = email.toLowerCase();
     }
@@ -32,6 +39,8 @@ class Seguridad {
             return this.password = yield hash;
         });
     }
+    // Metodo encargao de comparar los password de los usuarios, el que ingresa 
+    // y el que se encuentra en la base de datos.
     passwordCompare(password) {
         return __awaiter(this, void 0, void 0, function* () {
             return yield bcrypt_1.default.compare(password, this.password);
