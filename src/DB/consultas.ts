@@ -4,11 +4,13 @@ class Consulta extends Connection{
 
     // Permite usar el metodo de ConsultUser y retornar la consulta.
     public consult(email: string){
-        return this.consultUser(email);
+        return this.consultUser(email)
+        .then((consult) =>  consult )
+        .catch(err => {throw 'El email no se ha encontrado.'});
     }
 
     // Realiza la consulta a la base de datos
-    private consultUser(email: string){
+    private consultUser(email: string):Promise<Object>{
         let sql = 'SELECT * FROM UsersGame WHERE email = ?';
         /*
             Se implementa una promesa, para poder retonar la consulta,

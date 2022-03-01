@@ -20,7 +20,7 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
         > Comparar el password, el que esta en la base de datos y el que manda el usuario.
 */
 class Seguridad {
-    constructor(email, password) {
+    constructor(email = '', password) {
         this.email = email;
         this.password = password;
     }
@@ -41,9 +41,9 @@ class Seguridad {
     }
     // Metodo encargao de comparar los password de los usuarios, el que ingresa 
     // y el que se encuentra en la base de datos.
-    passwordCompare(password) {
+    passwordCompare({ PassUser }) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield bcrypt_1.default.compare(password, this.password);
+            return yield bcrypt_1.default.compare(PassUser, this.password);
         });
     }
 }

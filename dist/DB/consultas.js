@@ -7,7 +7,9 @@ const connection_1 = __importDefault(require("./connection"));
 class Consulta extends connection_1.default {
     // Permite usar el metodo de ConsultUser y retornar la consulta.
     consult(email) {
-        return this.consultUser(email);
+        return this.consultUser(email)
+            .then((consult) => consult)
+            .catch(err => { throw 'El email no se ha encontrado.'; });
     }
     // Realiza la consulta a la base de datos
     consultUser(email) {

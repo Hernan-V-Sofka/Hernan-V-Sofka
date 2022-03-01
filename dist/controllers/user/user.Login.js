@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.singIn = exports.singUp = void 0;
 const registerUser_1 = __importDefault(require("../../DB/registerUser"));
 const consultas_1 = __importDefault(require("../../DB/consultas"));
+const seguridad_1 = __importDefault(require("../../models/security/seguridad"));
 // Metodo encargado de realizar el registro del usuario en la base de datos
 const singUp = (req, res) => {
     const { name, lastName, email, password } = req.body;
@@ -24,16 +25,21 @@ const singUp = (req, res) => {
     const registro = new registerUser_1.default();
     registro.saveUser(name, lastName, email, password);
     res.send('Registro con exito');
+    return res.status(201).json();
 };
 exports.singUp = singUp;
-//Metodo encargado de Iniciar session a los usuarios registrados.
+// Metodo encargado de Iniciar session a los usuarios registrados.
 const singIn = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     if (!email || !password) {
         return res.status(400).json({ msg: 'Tiene un error en las credenciales ingresadas.' });
     }
-    const user = new consultas_1.default();
-    console.log(yield user.consult(email));
-    // console.log(tem2);
+    const busqueda = new consultas_1.default();
+    const User = yield busqueda.consult(email);
+    if ((Object.entries(User).length === 0) === true) {
+        return res.status(400).json({ msg: 'El usuario ingresado no existe' });
+    }
+    const seguridad = new seguridad_1.default(email, password);
+    seguridad.passwordCompare(User.Email);
 });
 exports.singIn = singIn;

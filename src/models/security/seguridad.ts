@@ -12,8 +12,7 @@ class Seguridad {
     private email: string;
     private password: string;
 
-    constructor(email: string, password: string){
- 
+    constructor(email: string = '', password: string){
         this.email = email;
         this.password = password;
     }
@@ -36,8 +35,8 @@ class Seguridad {
     
     // Metodo encargao de comparar los password de los usuarios, el que ingresa 
     // y el que se encuentra en la base de datos.
-    async passwordCompare(password: string){
-        return await bcrypt.compare(password,this.password)
+    async passwordCompare({PassUser}:{PassUser:string}){
+        return await bcrypt.compare(PassUser, this.password)
     }
 
 }
