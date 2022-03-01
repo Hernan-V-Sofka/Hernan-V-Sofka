@@ -5,38 +5,25 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const connection_1 = __importDefault(require("./connection"));
 class Consulta extends connection_1.default {
-    // Instancio
-    constructor() {
-        super();
-        this.email = '';
-        this.password = '';
-        this.res = {};
-    }
-    get getRes() {
-        return this.res;
-    }
-    set setRes(res) {
-        this.res = res;
-    }
-    buscar(email) {
-        return this.busqueda(email);
+    // Permite usar el metodo de ConsultUser y retornar la consulta.
+    consult(email) {
+        return this.consultUser(email);
     }
     // Realiza la consulta a la base de datos
-    busqueda(email) {
+    consultUser(email) {
         let sql = 'SELECT * FROM UsersGame WHERE email = ?';
-        // Realiza el query de la consulta y se usa un callback para realizar la validacion de la informacion
-        this.connection.query(sql, [email], (error, busqueda) => {
-            if (error)
-                throw Error;
-            // Se envia el objeto el array que tiene el objeto en forma de string.
-            // Recibe el objeto parseado y retorna el contenido especifico del objeto
-            // que obtiene de la base de datos     
-            this.parseoJson(JSON.stringify(busqueda[0]));
+        /*
+            Se implementa una promesa, para poder retonar la consulta,
+            usando una, usando el metodo JSON.stringify, se logra convertir la consulta de la base de datos
+            JSON.parser, se convierte a un JSON y se aplica la desestructuracion de objetos para sacar el Email y El password
+            del usuario y se retonar el objeto.
+        */
+        return new Promise((resolve, reject) => {
+            this.connection.query(sql, [email], (err, rows) => {
+                const { Email, PassUser } = JSON.parse(JSON.stringify(rows[0]));
+                return err ? reject(err) : resolve({ Email, PassUser });
+            });
         });
-    }
-    parseoJson(busqueda) {
-        const { Email, PassUser } = JSON.parse(busqueda);
-        return { Email, PassUser };
     }
 }
 exports.default = Consulta;

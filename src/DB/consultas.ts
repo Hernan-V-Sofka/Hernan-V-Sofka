@@ -2,79 +2,27 @@ import Connection from './connection';
 
 class Consulta extends Connection{
 
-    private email: String = '';
-    private password: String = '';
-    private res: Object = {};
-
-    // Instancio
-    constructor(){
-        super();
-    }
-    
-
-    public get getRes(){
-        return this.res;
-    }
-
-    public set setRes(res: Object){
-        this.res = res;
-    }
-
-    public buscar(email: string){
-        return this.busqueda(email);
+    // Permite usar el metodo de ConsultUser y retornar la consulta.
+    public consult(email: string){
+        return this.consultUser(email);
     }
 
     // Realiza la consulta a la base de datos
-    private busqueda(email: string){
+    private consultUser(email: string){
         let sql = 'SELECT * FROM UsersGame WHERE email = ?';
-        // Realiza el query de la consulta y se usa un callback para realizar la validacion de la informacion
-        this.connection.query(sql, [email], (error, busqueda:Array<Object>) => {
-            if(error) throw Error;
-            // Se envia el objeto el array que tiene el objeto en forma de string.
-            // Recibe el objeto parseado y retorna el contenido especifico del objeto
-            // que obtiene de la base de datos     
-            this.parseoJson(JSON.stringify(busqueda[0]))
+        /*
+            Se implementa una promesa, para poder retonar la consulta,
+            usando una, usando el metodo JSON.stringify, se logra convertir la consulta de la base de datos 
+            JSON.parser, se convierte a un JSON y se aplica la desestructuracion de objetos para sacar el Email y El password 
+            del usuario y se retonar el objeto.
+        */
+        return new Promise((resolve, reject) => {
+            this.connection.query(sql, [email], (err, rows) => {
+                const { Email, PassUser } = JSON.parse(JSON.stringify(rows[0]));
+                return err ? reject(err) : resolve({Email, PassUser});
+            });
         });
     }
-
-    public parseoJson(busqueda: string) {  
-        const {Email, PassUser} = JSON.parse(busqueda);
-        return {Email, PassUser};
-    }
- /*
-    // No retorna el correo.
-    public getEmail() {
-        return this.email;
-    }
-
-    public set setEmail(Email: string) {
-        this.email = Email;
-    }
-    
-    public getPassword(){
-        return this.password;
-    }
-
-    public set setPassUser(PassUser: string) {
-        this.password = PassUser;
-    }
-
-    // Encargado de realizar el parseo del string a objeto para poder desestructurarlo 
-    // y poder enviar a los metodos getter y setter para su asignacion y envido de los datos.
-    public parseoJson(busqueda: string) {  
-        const {Email, PassUser} = JSON.parse(busqueda);
-        this.setEmail = Email;
-        this.setPassUser = PassUser;
-        
-        console.log(this.getEmail());
-        console.log(this.getPassword());
-    }
-
-    retorno(retorno: Object): Object{
-        return retorno;
-    }
-    
-    */
 }
 
 export default Consulta;

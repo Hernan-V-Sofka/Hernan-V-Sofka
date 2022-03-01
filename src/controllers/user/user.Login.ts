@@ -15,14 +15,14 @@ export const singUp = (req: Request, res: Response) => {
 }
 
 //Metodo encargado de Iniciar session a los usuarios registrados.
-export const singIn = (req: Request, res: Response) => {
+export const singIn = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     if(!email || !password){
         return res.status(400).json({ msg:'Tiene un error en las credenciales ingresadas.'});
     }
 
     const user = new Busqueda();
-    user.buscar(email);
+    console.log(await user.consult(email));
     
     // console.log(tem2);
     
