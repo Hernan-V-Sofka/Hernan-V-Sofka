@@ -23,8 +23,10 @@ const singIn = (req, res) => {
     if (!email || !password) {
         return res.status(400).json({ msg: 'Tiene un error en las credenciales ingresadas.' });
     }
-    const user = new consultas_1.default(email);
-    let tem = user.getEmail; // traer email y password
-    console.log(tem);
+    const user = new consultas_1.default();
+    user.buscar(email);
+    // let tem = user.parseoJson // traer email y password
+    // let tem2 = user.getEmail();
+    // console.log(tem2);
 };
 exports.singIn = singIn;

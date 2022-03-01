@@ -21,11 +21,9 @@ export const singIn = (req: Request, res: Response) => {
         return res.status(400).json({ msg:'Tiene un error en las credenciales ingresadas.'});
     }
 
-    const user = new Busqueda(email);
-    let tem = user.getEmail; // traer email y password
-    let tem2 = user.getPassword
-    console.log(tem);
-    console.log(tem2);
+    const user = new Busqueda();
+    user.buscar(email);
     
+    // console.log(tem2);
     
 }

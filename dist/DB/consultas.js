@@ -6,41 +6,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const connection_1 = __importDefault(require("./connection"));
 class Consulta extends connection_1.default {
     // Instancio
-    constructor(email) {
+    constructor() {
         super();
         this.email = '';
         this.password = '';
-        this.busqueda(email);
+        this.res = {};
     }
-    // No retorna el correo.
-    get getEmail() {
-        return this.email;
+    get getRes() {
+        return this.res;
     }
-    set setEmail(Email) {
-        this.email = Email;
+    set setRes(res) {
+        this.res = res;
     }
-    getPassword() {
-        return this.password;
-    }
-    set setPassUser(PassUser) {
-        this.password = PassUser;
-    }
-    // Encargado de realizar el parseo del string a objeto para poder desestructurarlo 
-    // y poder enviar a los metodos getter y setter para su asignacion y envido de los datos.
-    parseoJson(busqueda) {
-        const { Email, PassUser } = JSON.parse(busqueda);
-        this.setEmail = Email;
-        this.setPassUser = PassUser;
+    buscar(email) {
+        return this.busqueda(email);
     }
     // Realiza la consulta a la base de datos
     busqueda(email) {
+        let sql = 'SELECT * FROM UsersGame WHERE email = ?';
         // Realiza el query de la consulta y se usa un callback para realizar la validacion de la informacion
-        this.connection.query('SELECT * FROM UsersGame WHERE email = ?', [email], (error, busqueda) => {
+        this.connection.query(sql, [email], (error, busqueda) => {
             if (error)
                 throw Error;
             // Se envia el objeto el array que tiene el objeto en forma de string.
+            // Recibe el objeto parseado y retorna el contenido especifico del objeto
+            // que obtiene de la base de datos     
             this.parseoJson(JSON.stringify(busqueda[0]));
         });
+    }
+    parseoJson(busqueda) {
+        const { Email, PassUser } = JSON.parse(busqueda);
+        return { Email, PassUser };
     }
 }
 exports.default = Consulta;
